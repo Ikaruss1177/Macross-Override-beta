@@ -69,12 +69,21 @@ function startMission() {
   if (fpsEl) fpsEl.classList.remove('hidden');
   if (typeof unlockAudio === 'function') unlockAudio();
   if (typeof playSFX === 'function') playSFX('transform', 0.85, 0);
+  if (gyroMobilePanel && gyroControlActive && gyroSensorSeen) {
+    gyroSetup.hidden = true;
+    gyroActions.hidden = false;
+  }
   clock.getDelta();
 }
 function returnToStartScreen() {
   isGameStarted = false;
   isPaused = false;
   restartDeclined = false;
+  if (gyroSetup && gyroActions) {
+    gyroSetup.hidden = false;
+    gyroActions.hidden = true;
+    if (gyroSensorSeen) gyroStatus.textContent = 'Giroscopio listo · ya puedes iniciar la misión';
+  }
   for (const k in keys) keys[k] = false;
 
   if (typeof silenceAllCombatAudio === 'function') {
@@ -136,6 +145,7 @@ if (timeOfDaySelect) {
 }
 
 const gyroMobilePanel = document.getElementById('gyroMobilePanel');
+const gyroSetup = document.getElementById('gyroSetup');
 const gyroStatus = document.getElementById('gyroStatus');
 const gyroActions = document.getElementById('gyroActions');
 const gyroEnableButton = document.getElementById('btnEnableGyro');
@@ -234,9 +244,16 @@ function onMobileDeviceOrientation(event) {
   if (!gyroSensorSeen) {
     gyroSensorSeen = true;
     gyroNeutralTilt = { ...tilt };
-    gyroActions.hidden = false;
-    gyroEnableButton.hidden = true;
-    gyroStatus.textContent = 'Giroscopio activo · inclina el teléfono para pilotar';
+    gyroEnableButton.hidden = false;
+    gyroEnableButton.textContent = 'RECALIBRAR';
+    if (isGameStarted) {
+      gyroSetup.hidden = true;
+      gyroActions.hidden = false;
+      gyroStatus.textContent = 'Giroscopio activo · inclina el teléfono para pilotar';
+    } else {
+      gyroActions.hidden = true;
+      gyroStatus.textContent = 'Giroscopio listo · ya puedes iniciar la misión';
+    }
   }
   updateGyroGameInput();
 }
@@ -271,6 +288,7 @@ async function enableMobileGyro() {
         window.removeEventListener('deviceorientation', onMobileDeviceOrientation);
         gyroStatus.textContent = 'No se detectó un giroscopio disponible en este teléfono.';
         gyroEnableButton.hidden = false;
+        gyroEnableButton.textContent = 'ACTIVAR GIROSCOPIO';
         gyroActions.hidden = true;
       }
     }, 2200);
@@ -283,8 +301,41 @@ async function enableMobileGyro() {
 if (isTouchDevice && window.DeviceOrientationEvent && gyroMobilePanel) {
   gyroMobilePanel.hidden = false;
   gyroMobilePanel.classList.add('is-available');
-  gyroEnableButton?.addEventListener('click', enableMobileGyro);
+  gyroSetup.hidden = false;
+  gyroActions.hidden = true;
+  gyroEnableButton?.addEventListener('click', () => {
+    if (gyroControlActive && gyroSensorSeen) recalibrateMobileGyro();
+    else enableMobileGyro();
+  });
   document.getElementById('btnGyroRecalibrate')?.addEventListener('click', recalibrateMobileGyro);
+  document.getElementById('btnMoreMobileActions')?.addEventListener('click', event => {
+    const button = event.currentTarget;
+    const extras = [...document.querySelectorAll('.gyro-extra-action')];
+    const opening = extras.some(extra => extra.hidden);
+    extras.forEach(extra => { extra.hidden = !opening; });
+    button.setAttribute('aria-expanded', String(opening));
+    button.textContent = opening ? 'MENOS ▴' : 'MÁS ▾';
+  });
+  const syncMobileGamepad = () => {
+    const connected = Array.from(navigator.getGamepads?.() || []).some(pad => pad?.connected);
+    gyroMobilePanel.classList.toggle('has-gamepad', connected);
+    const status = document.getElementById('mobileGamepadStatus');
+    if (status) status.textContent = connected ? 'Mando conectado · se usan sus controles y se ocultan los táctiles.' : 'Mando no detectado.';
+  };
+  window.addEventListener('gamepadconnected', syncMobileGamepad);
+  window.addEventListener('gamepaddisconnected', () => window.setTimeout(syncMobileGamepad, 100));
+  syncMobileGamepad();
+  window.setInterval(syncMobileGamepad, 700);
+  const hideTouchControls = document.getElementById('hideMobileControls');
+  try {
+    hideTouchControls.checked = localStorage.getItem('macrossvoxp-hide-mobile-controls') === 'true';
+  } catch (_) {}
+  gyroMobilePanel.classList.toggle('user-hide-controls', Boolean(hideTouchControls.checked));
+  hideTouchControls.addEventListener('change', () => {
+    const hidden = hideTouchControls.checked;
+    gyroMobilePanel.classList.toggle('user-hide-controls', hidden);
+    try { localStorage.setItem('macrossvoxp-hide-mobile-controls', String(hidden)); } catch (_) {}
+  });
 }
 
 function cycleMobileTransformation(direction) {

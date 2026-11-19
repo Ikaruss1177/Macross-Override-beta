@@ -50,6 +50,7 @@
         <button class="options-category-tab active" type="button" role="tab" aria-selected="true" aria-controls="controlsOptions" data-options-category="controlsOptions">CONTROLES</button>
         <button class="options-category-tab" type="button" role="tab" aria-selected="false" aria-controls="audioOptions" data-options-category="audioOptions">SONIDO Y MÚSICA</button>
         <button class="options-category-tab" type="button" role="tab" aria-selected="false" aria-controls="gameOptions" data-options-category="gameOptions">JUEGO</button>
+        <button class="options-category-tab" type="button" role="tab" aria-selected="false" aria-controls="mobileOptions" data-options-category="mobileOptions">MÓVIL</button>
       </nav>
 
       <div class="options-category-panel active" id="controlsOptions">
@@ -245,6 +246,20 @@
         <p class="time-of-day-note">La selección se guarda automáticamente para la próxima partida.</p>
       </section>
 
+      <section class="options-category-panel mobile-options" id="mobileOptions" role="tabpanel" hidden>
+        <h3 class="options-section-title">CONTROLES PARA CELULAR</h3>
+        <p class="options-help">Activa el giroscopio desde aquí antes de comenzar la misión. Si conectas un mando, los controles táctiles se ocultan automáticamente.</p>
+        <div id="gyroSetup" class="gyro-setup mobile-gyro-setup">
+          <span id="gyroStatus">Control por movimiento · coloca el teléfono en horizontal</span>
+          <button id="btnEnableGyro" type="button">ACTIVAR GIROSCOPIO</button>
+        </div>
+        <label class="mobile-setting" for="hideMobileControls">
+          <input type="checkbox" id="hideMobileControls">
+          <span>Ocultar controles táctiles durante la partida</span>
+        </label>
+        <p id="mobileGamepadStatus" class="gamepad-status" role="status" aria-live="polite">Mando no detectado.</p>
+      </section>
+
       <p id="bindingStatus" class="binding-status" role="status" aria-live="polite"></p>
 
       <footer class="options-footer options-global-footer">
@@ -266,10 +281,6 @@
   <div id="fpsBox" class="hidden">FPS: 60</div>
 
   <section id="gyroMobilePanel" class="gyro-mobile-panel" hidden aria-label="Controles móviles por giroscopio">
-    <div id="gyroSetup" class="gyro-setup">
-      <span id="gyroStatus">Control por movimiento · coloca el teléfono en horizontal</span>
-      <button id="btnEnableGyro" type="button">ACTIVAR GIROSCOPIO</button>
-    </div>
     <div id="gyroActions" class="gyro-actions" hidden>
       <div class="gyro-action-cluster gyro-movement-actions">
         <button type="button" data-mobile-action="moveForward">AVANZAR</button>
@@ -280,13 +291,14 @@
       <div class="gyro-action-cluster gyro-combat-actions">
         <button type="button" data-mobile-action="gunpod">GUNPOD</button>
         <button type="button" data-mobile-action="missiles">MISILES</button>
-        <button type="button" data-mobile-action="targetLock">FIJAR</button>
         <button type="button" data-mobile-action="turbo">TURBO</button>
-        <button type="button" data-mobile-action="reverse">REVERSA</button>
-        <button type="button" data-mobile-action="melee">GOLPE</button>
-        <button type="button" data-mobile-action="chaff">CHAFF</button>
+        <button id="btnMoreMobileActions" type="button" aria-expanded="false">MÁS ▾</button>
+        <button class="gyro-extra-action" type="button" data-mobile-action="targetLock" hidden>FIJAR</button>
+        <button class="gyro-extra-action" type="button" data-mobile-action="reverse" hidden>REVERSA</button>
+        <button class="gyro-extra-action" type="button" data-mobile-action="melee" hidden>GOLPE</button>
+        <button class="gyro-extra-action" type="button" data-mobile-action="chaff" hidden>CHAFF</button>
       </div>
-      <button id="btnGyroRecalibrate" class="gyro-recalibrate" type="button" aria-label="Recalibrar giroscopio">CALIBRAR</button>
+      <button id="btnGyroRecalibrate" class="gyro-recalibrate" type="button" aria-label="Recalibrar giroscopio">↻</button>
       <button id="btnMobilePause" class="gyro-pause" type="button" aria-label="Pausa">Ⅱ</button>
     </div>
   </section>

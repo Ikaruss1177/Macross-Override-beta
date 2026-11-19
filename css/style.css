@@ -427,21 +427,29 @@ button.warn {
 }
 
 .gyro-mobile-panel { display: none; }
-.gyro-mobile-panel.is-available { display: block; position: fixed; inset: auto 0 max(8px, env(safe-area-inset-bottom)) 0; z-index: 24; pointer-events: none; }
+.gyro-mobile-panel.is-available { display: block; position: fixed; inset: auto 0 max(72px, env(safe-area-inset-bottom)) 0; z-index: 60; pointer-events: none; }
+.gyro-mobile-panel.has-gamepad { display: none !important; }
+.gyro-mobile-panel.user-hide-controls .gyro-actions { display: none !important; }
 .gyro-setup { display: flex; align-items: center; justify-content: center; gap: 10px; width: fit-content; max-width: calc(100vw - 20px); margin: 0 auto; padding: 8px 10px; border: 1px solid #38bdf8; border-radius: 8px; background: rgba(2, 6, 17, .9); box-shadow: 0 0 14px rgba(56, 189, 248, .24); pointer-events: auto; }
+.mobile-gyro-setup { justify-content: space-between; width: min(100%, 620px); margin: 16px 0; background: rgba(15, 23, 42, .55); box-shadow: none; }
 .gyro-setup span { color: #cbd5e1; font: 11px Arial, sans-serif; }
-.gyro-setup button, .gyro-actions button { min-height: 42px; padding: 7px 9px; color: #e0f2fe; border: 1px solid #287ca0; border-radius: 8px; background: rgba(5, 19, 34, .92); font: 700 9px Arial, sans-serif; letter-spacing: .35px; touch-action: none; -webkit-tap-highlight-color: transparent; }
+.gyro-setup button, .gyro-actions button { min-height: 36px; padding: 5px 7px; color: #e0f2fe; border: 1px solid #287ca0; border-radius: 8px; background: rgba(5, 19, 34, .92); font: 700 8px Arial, sans-serif; letter-spacing: .25px; touch-action: none; -webkit-tap-highlight-color: transparent; }
 .gyro-setup button { flex: 0 0 auto; color: #b9f878; border-color: #68a83a; }
 .gyro-actions[hidden], .gyro-setup[hidden] { display: none !important; }
-.gyro-actions { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding: 0 max(10px, env(safe-area-inset-left)) 0 max(10px, env(safe-area-inset-right)); pointer-events: none; }
-.gyro-action-cluster { display: grid; gap: 6px; pointer-events: auto; }
-.gyro-movement-actions { grid-template-columns: repeat(2, minmax(58px, 1fr)); width: min(31vw, 190px); }
-.gyro-combat-actions { grid-template-columns: repeat(3, minmax(54px, 1fr)); width: min(49vw, 300px); }
+.gyro-actions { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 8px; padding: 0 max(8px, env(safe-area-inset-left)) 0 max(8px, env(safe-area-inset-right)); pointer-events: none; }
+.gyro-action-cluster { display: grid; gap: 4px; pointer-events: auto; }
+.gyro-movement-actions { grid-template-columns: repeat(2, minmax(48px, 1fr)); width: min(26vw, 148px); }
+.gyro-combat-actions { grid-template-columns: repeat(2, minmax(54px, 1fr)); width: min(37vw, 210px); }
+.gyro-extra-action[hidden] { display: none !important; }
 .gyro-actions button { pointer-events: auto; }
 .gyro-actions button:active, .gyro-actions button.is-pressed { color: #fff; border-color: #b9f878; background: rgba(25, 72, 52, .94); box-shadow: 0 0 12px rgba(185, 248, 120, .38); }
-.gyro-actions .gyro-recalibrate, .gyro-actions .gyro-pause { position: absolute; top: -48px; width: 74px; min-height: 36px; font-size: 8px; }
-.gyro-actions .gyro-recalibrate { left: 50%; transform: translateX(-50%); }
-.gyro-actions .gyro-pause { right: max(12px, env(safe-area-inset-right)); width: 42px; font-size: 17px; }
+.gyro-actions .gyro-recalibrate, .gyro-actions .gyro-pause { position: absolute; top: -38px; width: 32px; min-height: 30px; font-size: 13px; }
+.gyro-actions .gyro-recalibrate { left: 8px; }
+.gyro-actions .gyro-pause { right: max(8px, env(safe-area-inset-right)); width: 34px; font-size: 15px; }
+.mobile-setting { display: flex; align-items: center; gap: 10px; max-width: 620px; margin: 12px 0; padding: 12px; color: #cbd5e1; border: 1px solid #1e3a5f; border-radius: 5px; background: rgba(15, 23, 42, .55); font: 13px Arial, sans-serif; }
+.mobile-setting input { width: 17px; height: 17px; accent-color: #38bdf8; }
+.mobile-options { min-height: 260px; padding-top: 18px; font-family: Arial, sans-serif; }
+.mobile-options .options-help, .mobile-options .gamepad-status { font-family: Arial, sans-serif; }
 
 .audio-panel {
   display: flex;
@@ -524,9 +532,9 @@ button.warn {
 }
 
 @media (max-height: 480px) and (pointer: coarse) {
-  .gyro-movement-actions, .gyro-combat-actions { gap: 4px; }
-  .gyro-actions button { min-height: 36px; padding: 5px 6px; font-size: 8px; }
-  .gyro-actions .gyro-recalibrate, .gyro-actions .gyro-pause { top: -40px; min-height: 32px; }
+  .gyro-movement-actions, .gyro-combat-actions { gap: 3px; }
+  .gyro-actions button { min-height: 31px; padding: 4px 5px; font-size: 7px; }
+  .gyro-actions .gyro-recalibrate, .gyro-actions .gyro-pause { top: -34px; min-height: 28px; }
   .start-box { max-width: 480px; padding-top: 12px; padding-bottom: 12px; }
 }
 
